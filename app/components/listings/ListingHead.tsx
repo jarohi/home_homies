@@ -9,29 +9,30 @@ import Heading from "../Heading";
 import HeartButton from "../HeartButton";
 
 interface ListingHeadProps {
-  title: string;
-  locationValue: string;
-  imageSrc: string;
+  bhk: number;
+  rent: number;
+  images_url: string;
   id: string;
   currentUser?: SafeUser | null
+  location_type: String;
 }
 
 const ListingHead: React.FC<ListingHeadProps> = ({
-  title,
-  locationValue,
-  imageSrc,
+  bhk,
+  rent,
+  images_url,
   id,
-  currentUser
+  currentUser,
+  location_type
 }) => {
   const { getByValue } = useCountries();
 
-  const location = getByValue(locationValue);
+  // const location = getByValue(locationValue);
 
   return ( 
     <>
       <Heading
-        title={title}
-        subtitle={`${location?.region}, ${location?.label}`}
+        title={`Occupancy in ${bhk?.toString()} bhk in ${location_type}`}
       />
       <div className="
           w-full
@@ -42,7 +43,7 @@ const ListingHead: React.FC<ListingHeadProps> = ({
         "
       >
         <Image
-          src={imageSrc}
+          src={images_url}
           fill
           className="object-cover w-full"
           alt="Image"

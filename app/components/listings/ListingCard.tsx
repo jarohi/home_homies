@@ -38,10 +38,10 @@ const ListingCard: React.FC<ListingCardProps> = ({
   const router = useRouter();
   const { getByValue } = useCountries();
 
-  const location = getByValue(data.locationValue);
+  // const location = getByValue(data.locationValue);
 
   const handleCancel = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
+    (e: React.MouseEvent<HTMLButtonElement>) => { 
     e.stopPropagation();
 
     if (disabled) {
@@ -56,8 +56,8 @@ const ListingCard: React.FC<ListingCardProps> = ({
       return reservation.totalPrice;
     }
 
-    return data.price;
-  }, [reservation, data.price]);
+    return data.rent;
+  }, [reservation, data.rent]);
 
   const reservationDate = useMemo(() => {
     if (!reservation) {
@@ -79,7 +79,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
         <div 
           className="
             aspect-square 
-            w-full 
+            w-full
             relative 
             overflow-hidden 
             rounded-xl
@@ -94,7 +94,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
               group-hover:scale-110 
               transition
             "
-            src={data.imageSrc}
+            src={data.images_url}
             alt="Listing"
           />
           <div className="
@@ -109,10 +109,10 @@ const ListingCard: React.FC<ListingCardProps> = ({
           </div>
         </div>
         <div className="font-semibold text-lg">
-          {location?.region}, {location?.label}
+          {/* {location?.region}, {location?.label} */}
         </div>
         <div className="font-light text-neutral-500">
-          {reservationDate || data.category}
+          {reservationDate || data.property_type}
         </div>
         <div className="flex flex-row items-center gap-1">
           <div className="font-semibold">

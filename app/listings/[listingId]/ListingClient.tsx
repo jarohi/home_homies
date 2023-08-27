@@ -15,6 +15,7 @@ import { categories } from "@/app/components/navbar/Categories";
 import ListingHead from "@/app/components/listings/ListingHead";
 import ListingInfo from "@/app/components/listings/ListingInfo";
 import ListingReservation from "@/app/components/listings/ListingReservation";
+import { post } from "@prisma/client";
 
 const initialDateRange = {
   startDate: new Date(),
@@ -24,7 +25,7 @@ const initialDateRange = {
 
 interface ListingClientProps {
   reservations?: SafeReservation[];
-  listing: SafeListing & {
+  listing: post & {
     user: SafeUser;
   };
   currentUser?: SafeUser | null;
@@ -55,11 +56,11 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
   const category = useMemo(() => {
      return categories.find((items) => 
-      items.label === listing.category);
-  }, [listing.category]);
+      items.label === listing.property_type);
+  }, [listing.property_type]);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(listing.price);
+  const [totalPrice, setTotalPrice] = useState(listing.rent);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
 
   const onCreateReservation = useCallback(() => {
@@ -102,13 +103,13 @@ const ListingClient: React.FC<ListingClientProps> = ({
         dateRange.startDate
       );
       
-      if (dayCount && listing.price) {
-        setTotalPrice(dayCount * listing.price);
+      if (dayCount && listing.rent) {
+        setTotalPrice(dayCount * listing.rent);
       } else {
-        setTotalPrice(listing.price);
+        setTotalPrice(listing.rent);
       }
     }
-  }, [dateRange, listing.price]);
+  }, [dateRange, listing.rent]);
 
   return ( 
     <Container>
@@ -120,11 +121,13 @@ const ListingClient: React.FC<ListingClientProps> = ({
       >
         <div className="flex flex-col gap-6">
           <ListingHead
-            title={listing.title}
-            imageSrc={listing.imageSrc}
-            locationValue={listing.locationValue}
+            bhk={listing.bhk}
+            images_url={listing.images_url}
+            rent={listing.rent}
+            // locationValue={listing.locationValue}
             id={listing.id}
             currentUser={currentUser}
+            location_type={listing.location_type}
           />
           <div 
             className="
@@ -138,11 +141,11 @@ const ListingClient: React.FC<ListingClientProps> = ({
             <ListingInfo
               user={listing.user}
               category={category}
-              description={listing.description}
-              roomCount={listing.roomCount}
-              guestCount={listing.guestCount}
-              bathroomCount={listing.bathroomCount}
-              locationValue={listing.locationValue}
+              description={listing.furnishing_status}
+              rent={listing.rent}
+              deposit={listing.deposit}
+              brokerage={listing.brokerage}
+              // locationValue={listing.locationValue}
             />
             <div 
               className="
@@ -153,7 +156,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
               "
             >
               <ListingReservation
-                price={listing.price}
+                price={listing.rent}
                 totalPrice={totalPrice}
                 onChangeDate={(value) => setDateRange(value)}
                 dateRange={dateRange}
